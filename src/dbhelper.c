@@ -73,4 +73,15 @@ void print_table(PGconn *conn){
     PQclear(res);
 }
 
+bool insertbook(PGconn *conn, Book *book){
+    valid_conn(conn);
+
+    char command[MAX_COMMAND_LEN];
+
+    strcpy(command, "INSERT INTO gilBooks VALUES(");
+    strcat(command, get_numrows + 1);
+    // TODO: Insert book data with a comma between each value.
+
+}
+
 
