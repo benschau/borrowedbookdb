@@ -2,15 +2,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <libpq-fe.h>
+#include <string.h>
 
 #include "dbhelper.h"
+#include "date.h"
+#include "book.h"
 
 void do_exit(PGconn *conn){
     PQfinish(conn);
     exit(1);
 }
 
-bool valid_conn(PGconn *conn){
+void valid_conn(PGconn *conn){
     if (PQstatus(conn) == CONNECTION_BAD){
         fprintf(stderr, "Connection to database failed: %s\n", PQerrorMessage(conn));
         do_exit(conn); 
@@ -73,15 +76,37 @@ void print_table(PGconn *conn){
     PQclear(res);
 }
 
+bool clear_table(PGconn *conn){
+    return true;
+}
+
 bool insertbook(PGconn *conn, Book *book){
     valid_conn(conn);
-
+    
+    /* 
     char command[MAX_COMMAND_LEN];
+    char* cmd = "INSERT INTO gilBooks VALUES";
+     
+    int num = snprintf(command, sizeof(command), "%s(\'%s\', \'%s\', \'%s\', \'%s\');", cmd, book->title, book->isbn, book->author, getdate(book->checkin));
+   
+    if (num > MAX_COMMAND_LEN){
+        // buffer too small,       
+    }
+    */
+   
+    const char *params[NUM_BOOK_PARAMS] = { book->title, book->isbn, book->author, getdate(book->checkin) }; 
 
-    strcpy(command, "INSERT INTO gilBooks VALUES(");
-    strcat(command, get_numrows + 1);
-    // TODO: Insert book data with a comma between each value.
-
+    char *cmd = "INSERT INTO gilBooks VALUES($1, $2, $3, $4);";
+    
+    PGresult *res = PQexecParams(conn, cmd, NUM_BOOK_PARAMS, NULL, params, NULL, NULL, 0);
+    
+    if (PQresultStatus(res) != PGRES_COMMAND_OK){
+        printf("Error! Did not execute insertion correctly.\n");  
+        PQclear(res);
+        return false; 
+    }
+   
+    return true;
 }
 
 
