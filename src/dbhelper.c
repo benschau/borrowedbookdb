@@ -20,16 +20,6 @@ void valid_conn(PGconn *conn){
     }
 }
 
-/*
-bool valid_res(PGconn *conn, PGresult *res){
-   if (PQresultStatus(res) != PGRES_TUPLES_OK){
-        printf("No data structures in %s", PQdb(conn)); 
-        PQclear(res);
-        //exit 
-   }
-}
-*/
-
 int get_numrows(PGconn *conn){
     valid_conn(conn);
      
@@ -83,25 +73,14 @@ bool clear_table(PGconn *conn){
 bool insertbook(PGconn *conn, Book *book){
     valid_conn(conn);
     
-    /* 
-    char command[MAX_COMMAND_LEN];
-    char* cmd = "INSERT INTO gilBooks VALUES";
-     
-    int num = snprintf(command, sizeof(command), "%s(\'%s\', \'%s\', \'%s\', \'%s\');", cmd, book->title, book->isbn, book->author, getdate(book->checkin));
-   
-    if (num > MAX_COMMAND_LEN){
-        // buffer too small,       
-    }
-    */
-   
     const char *params[NUM_BOOK_PARAMS] = { book->title, book->isbn, book->author, getdate(book->checkin) }; 
 
     char *cmd = "INSERT INTO gilBooks VALUES($1, $2, $3, $4);";
     
     PGresult *res = PQexecParams(conn, cmd, NUM_BOOK_PARAMS, NULL, params, NULL, NULL, 0);
-    
+
     if (PQresultStatus(res) != PGRES_COMMAND_OK){
-        printf("Error! Did not execute insertion correctly.\n");  
+        fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
         PQclear(res);
         return false; 
     }
@@ -109,4 +88,9 @@ bool insertbook(PGconn *conn, Book *book){
     return true;
 }
 
-
+bool removebook(PGconn *conn, char* key){
+    valid_conn(conn);
+	
+    
+    return true;    
+}
