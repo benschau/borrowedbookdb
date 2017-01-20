@@ -88,9 +88,42 @@ bool insertbook(PGconn *conn, Book *book){
     return true;
 }
 
-bool removebook(PGconn *conn, char* key){
+bool removebook(PGconn *conn, char *isbn){
     valid_conn(conn);
-	
+   
+    char *cmd = "DELETE FROM gilBooks WHERE isbn = $1;";  
+  
+    PGresult *res = PQexecParams(conn, cmd, 1, NULL, isbn, NULL, NULL, 0);
     
+    if (PQresultStatus(res) != PGRES_COMMAND_OK){
+        fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
+        PQclear(res);
+        return false; 
+    }
+
     return true;    
+}
+
+bool renewbook(PGconn *conn, char *isbn){
+    valid_conn(conn);
+     
+     
+     
+    return true; 
+}
+
+bool cleartable(PGconn *conn){
+    valid_conn(conn);
+    
+    char* cmd = "DELETE FROM gilBooks";
+
+    PGresult *res = PQexec(conn, cmd); 
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK){
+        fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
+        PQclear(res);
+        return false; 
+    }
+
+    return true;
 }
