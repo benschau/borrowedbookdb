@@ -10,3 +10,11 @@ char* getdate(Date* date){
     return(datestr);
 }
 
+char* valid_day(int day){
+}
+
+char* valid_month(int month){
+}
+
+char* valid_year(int year){
+}
