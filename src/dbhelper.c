@@ -8,11 +8,17 @@
 #include "date.h"
 #include "book.h"
 
+/** 
+ * Close the connection to the database.
+ */
 void do_exit(PGconn *conn){
     PQfinish(conn);
     exit(1);
 }
 
+/** 
+ * Check if the connection to the database is valid.
+ */
 void valid_conn(PGconn *conn){
     if (PQstatus(conn) == CONNECTION_BAD){
         fprintf(stderr, "Connection to database failed: %s\n", PQerrorMessage(conn));
@@ -20,6 +26,9 @@ void valid_conn(PGconn *conn){
     }
 }
 
+/**
+ * Get the number of books in the checkout db.
+ */
 int get_numrows(PGconn *conn){
     valid_conn(conn);
      
@@ -30,6 +39,9 @@ int get_numrows(PGconn *conn){
     return rows;
 }
 
+/**
+ * Print the index of a given row in the checkout db.
+ */
 void print_row(PGconn *conn, int row){
    valid_conn(conn); 
    
@@ -49,6 +61,9 @@ void print_row(PGconn *conn, int row){
    PQclear(res);
 }
 
+/**
+ * Print the checkout db.
+ */
 void print_table(PGconn *conn){
     valid_conn(conn); 
     
@@ -66,10 +81,29 @@ void print_table(PGconn *conn){
     PQclear(res);
 }
 
-bool clear_table(PGconn *conn){
+/**
+ * Drop the entire checkout table.
+ */
+bool cleartable(PGconn *conn){
+    valid_conn(conn);
+    
+    char* cmd = "DELETE FROM gilBooks";
+
+    PGresult *res = PQexec(conn, cmd); 
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK){
+        fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
+        PQclear(res);
+        return false; 
+    }
+
     return true;
 }
 
+/** 
+ * Insert a book into the checkout db
+ * TODO: If the same book is in the db table of books that've been checked out before.... 
+ */
 bool insertbook(PGconn *conn, Book *book){
     valid_conn(conn);
     
@@ -88,6 +122,10 @@ bool insertbook(PGconn *conn, Book *book){
     return true;
 }
 
+/** 
+ * Remove a book from checkout db.
+ * TODO: Add the removed book to another db table that keeps track of books you've borrowed before.
+ */
 bool removebook(PGconn *conn, char *isbn){
     valid_conn(conn);
    
@@ -104,26 +142,38 @@ bool removebook(PGconn *conn, char *isbn){
     return true;    
 }
 
+// TODO: add function for valid result, valid_res()
+
+/** 
+ * Renews books in the database by RENEW_TIME, by default 1 month.
+ */
 bool renewbook(PGconn *conn, char *isbn){
     valid_conn(conn);
-     
-     
-     
-    return true; 
-}
-
-bool cleartable(PGconn *conn){
-    valid_conn(conn);
     
-    char* cmd = "DELETE FROM gilBooks";
-
-    PGresult *res = PQexec(conn, cmd); 
-
+    Date* d = malloc(sizeof(Date));
+    char *cmd = "SELECT * FROM gilBooks WHERE isbn=$1";
+    PGresult *res = PQexecParams(conn, cmd, 1, NULL, isbn, NULL, NULL, 0); 
     if (PQresultStatus(res) != PGRES_COMMAND_OK){
         fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
         PQclear(res);
         return false; 
     }
 
-    return true;
+    // TODO: set d to vals of isbn entry, add RENEW_TIME (default 1) to month.
+
+
+    const char *params[2] = { getdate(d), isbn }; 
+    
+    cmd = "UPDATE gilBooks SET checkin=$1 WHERE isbn=$2;";      
+     
+    res = PQexecParams(conn, cmd, 2, NULL, params, NULL, NULL, 0);
+    
+    if (PQresultStatus(res) != PGRES_COMMAND_OK){
+        fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
+        PQclear(res);
+        return false; 
+    }
+    
+    return true; 
 }
+
