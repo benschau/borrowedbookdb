@@ -11,10 +11,10 @@ typedef struct Dates {
 
 char* getdate(Date* date);
 
-char* valid_day(int day);
+bool valid_day(int day);
 
-char* valid_month(int month);
+bool valid_month(int month);
 
-char* valid_year(int year);
+bool valid_year(int year);
 
 #endif

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define NUM_BOOK_PARAMS 4
+#define RENEW_TIME 1
 
 typedef struct Books {
     char *title;
