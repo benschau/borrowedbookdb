@@ -12,6 +12,17 @@ int peekid(){
 }
 */
 
+Book* initbook(char *title, char *isbn, char *author, Date *checkin){
+    Book* book = malloc(sizeof(Book));
+    
+    book->title = valid_title(title) ? title : NULL;
+    book->isbn = valid_isbn(isbn) ? isbn : NULL;
+    book->author = valid_author(author) ? author : NULL;
+    book->checkin = checkin;
+        
+    return book;    
+}
+
 /**
  * Compare two books by their titles, authors?
  */

@@ -3,6 +3,10 @@
 
 #include "date.h"
 
+Date* initdate(int day, int month, int year){
+
+}
+
 /** 
  * Print a string representation of Date.
  */

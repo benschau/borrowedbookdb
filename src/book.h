@@ -24,4 +24,6 @@ bool valid_isbn(char *isbn);
 
 bool valid_author(char *author);
 
+Book* initbook(char *title, char *isbn, char *author);
+
 #endif

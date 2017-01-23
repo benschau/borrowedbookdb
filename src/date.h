@@ -17,4 +17,6 @@ bool valid_month(int month);
 
 bool valid_year(int year);
 
+Date* initdate(int day, int month, int year);
+
 #endif
