@@ -159,8 +159,10 @@ bool renewbook(PGconn *conn, char *isbn){
         return false; 
     }
 
-    // TODO: set d to vals of isbn entry, add RENEW_TIME (default 1) to month.
-
+    // TODO: add date validation
+    d->day = (int) PQgetvalue(res, 0, 0);
+    d->month = (int) PQgetvalue(res, 0, 1) + RENEW_TIME;
+    d->year = (int) PQgetvalue(res, 0, 2);
 
     const char *params[2] = { getdate(d), isbn }; 
     
@@ -171,6 +173,8 @@ bool renewbook(PGconn *conn, char *isbn){
     if (PQresultStatus(res) != PGRES_COMMAND_OK){
         fprintf(stderr, "Command not executed: %s\n", PQerrorMessage(conn)); 
         PQclear(res);
+        
+        free(d); 
         return false; 
     }
     
