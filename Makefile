@@ -12,5 +12,7 @@ all: $(TGT)
 
 $(TGT): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-    
+
+clean:
+	rm $(SRC_DIR)*.o    
  
