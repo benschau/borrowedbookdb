@@ -147,7 +147,7 @@ bool removebook(PGconn *conn, char *isbn){
 /** 
  * Renews books in the database by RENEW_TIME, by default 1 month.
  */
-bool renewbook(PGconn *conn, char *isbn){
+bool renewbook(PGconn *conn, const char *const isbn){
     valid_conn(conn);
     
     Date* d = malloc(sizeof(Date));

@@ -21,8 +21,8 @@ bool cleartable(PGconn *conn);
 
 bool insertbook(PGconn *conn, Book* book);
 
-bool removebook(PGconn *conn, char* key);
+bool removebook(PGconn *conn, char* isbn);
 
-bool renewbook(PGconn *conn, Book* book);
+bool renewbook(PGconn *conn, const char *const isbn);
 
 #endif 

@@ -9,7 +9,7 @@
 int main(int argc, char** argv){
     PGconn *conn = PQconnectdb("user=barchie dbname=bookdb");
     valid_conn(conn);  
-
+    
     Book* book = malloc(sizeof(Book));
 
     book->title = "C Programming Language";

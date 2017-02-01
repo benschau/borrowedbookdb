@@ -3,6 +3,8 @@
 
 #define MAX_DATE_LEN 10
 
+#include <stdbool.h>
+
 typedef struct Dates {
     int day;
     int month;
