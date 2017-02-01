@@ -1,17 +1,16 @@
-TGT = gilbookdb
-
+LIBS = -lpq
 CC     = gcc
-CFLAGS = -g -o $(TGT) -lpq -Wall
+CFLAGS = -g -Wall
 
-SRCDIR = src/
+TGT = bookdb
 
-default: main
+SRC_DIR = src/
+SRCS = $(wildcard $(SRC_DIR)*.c)
+OBJ = $(SRCS:.c=.o)
 
-main:
-	$(CC) $(CFLAGS) $(SRCDIR)main.c $(SRCDIR)dbhelper.c $(SRCDIR)date.c $(SRCDIR)book.c
+all: $(TGT)
 
-test:
-        
-
-clean:
+$(TGT): $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
     
+ 
