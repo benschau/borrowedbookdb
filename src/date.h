@@ -5,6 +5,8 @@
 
 #include <stdbool.h>
 
+const int monthdays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
 typedef struct Dates {
     int day;
     int month;
@@ -13,7 +15,7 @@ typedef struct Dates {
 
 char* getdate(Date* date);
 
-bool valid_day(int day);
+bool valid_day(int day, int month);
 
 bool valid_month(int month);
 
