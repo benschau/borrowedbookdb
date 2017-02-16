@@ -26,9 +26,11 @@ Book* initbook(char *title, char *isbn, char *author, Date *checkin){
 }
 
 /**
- * Compare two books by their titles, authors?
+ * Compare two books.
+ * Not sure if by title, by author, by?
  */
-bool compare(Book *book){
+int compare(Book *book, Book *book2, int (*crit)()){
+    return 0; 
 }
 
 /**
@@ -61,6 +63,9 @@ bool valid_title(char *title){
  *        if not, it is invalid. 
  */
 bool valid_isbn(char *isbn){
+     
+    
+    return true;
 }
 
 /** 
