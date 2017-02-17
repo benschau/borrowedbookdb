@@ -7,6 +7,8 @@
 
 #define MAX_COMMAND_LEN 1024
 
+/* PGconn* initBookDB(); */
+
 void do_exit(PGconn *conn);
 
 void valid_conn(PGconn *conn);
@@ -21,8 +23,8 @@ bool cleartable(PGconn *conn);
 
 bool insertbook(PGconn *conn, Book* book);
 
-bool removebook(PGconn *conn, char* isbn);
+bool removebook(PGconn *conn, const char *const *isbn);
 
-bool renewbook(PGconn *conn, const char *const isbn);
+bool renewbook(PGconn *conn, const char *const *isbn);
 
 #endif 

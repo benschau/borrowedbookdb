@@ -5,8 +5,8 @@
 #include <libpq-fe.h>
 
 #include "book.h"
-#include "date.h"
-#include "dbhelper.h"
+//#include "date.h"
+//#include "dbhelper.h"
 
 Book* initbook(char *title, char *isbn, char *author, Date *checkin){
     int errnum; 
@@ -29,7 +29,7 @@ Book* initbook(char *title, char *isbn, char *author, Date *checkin){
  * Compare two books.
  * Not sure if by title, by author, by?
  */
-int compare(Book *book, Book *book2, int (*crit)()){
+int compare(Book *book, Book *book2){
     return 0; 
 }
 

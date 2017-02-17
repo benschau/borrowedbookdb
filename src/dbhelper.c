@@ -5,8 +5,18 @@
 #include <string.h>
 
 #include "dbhelper.h"
-#include "date.h"
-#include "book.h"
+//#include "date.h"
+//#include "book.h"
+
+/**
+ * Initialize the database if it hasn't been created yet.
+ *  Default name: bookdb
+ *  Default user: current user
+ */
+/* PGConn* initBookDB(){ */
+
+/* } */
+
 
 /** 
  * Close the connection to the database.
@@ -126,7 +136,7 @@ bool insertbook(PGconn *conn, Book *book){
  * Remove a book from checkout db.
  * TODO: Add the removed book to another db table that keeps track of books you've borrowed before.
  */
-bool removebook(PGconn *conn, char *isbn){
+bool removebook(PGconn *conn, const char *const *isbn){
     valid_conn(conn);
    
     char *cmd = "DELETE FROM gilBooks WHERE isbn = $1;";  
@@ -147,7 +157,7 @@ bool removebook(PGconn *conn, char *isbn){
 /** 
  * Renews books in the database by RENEW_TIME, by default 1 month.
  */
-bool renewbook(PGconn *conn, const char *const isbn){
+bool renewbook(PGconn *conn, const char *const *isbn){
     valid_conn(conn);
     
     Date* d = malloc(sizeof(Date));
@@ -160,11 +170,11 @@ bool renewbook(PGconn *conn, const char *const isbn){
     }
 
     // TODO: add date validation
-    d->day = (int) PQgetvalue(res, 0, 0);
-    d->month = (int) PQgetvalue(res, 0, 1) + RENEW_TIME;
-    d->year = (int) PQgetvalue(res, 0, 2);
+    d->day = (int) *(PQgetvalue(res, 0, 0));
+    d->month = (int) *(PQgetvalue(res, 0, 1)) + RENEW_TIME;
+    d->year = (int) *(PQgetvalue(res, 0, 2));
 
-    const char *params[2] = { getdate(d), isbn }; 
+    const char *params[2] = { getdate(d), *isbn }; 
     
     cmd = "UPDATE gilBooks SET checkin=$1 WHERE isbn=$2;";      
      

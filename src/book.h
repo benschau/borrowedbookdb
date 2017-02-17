@@ -16,7 +16,7 @@ typedef struct Books {
     Date *checkin;
 } Book;
 
-bool compare(Book *book);
+int compare(Book *book, Book *book2);
 
 bool valid_title(char *title);
 
