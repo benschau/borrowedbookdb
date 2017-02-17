@@ -34,7 +34,7 @@ char* getdate(Date* date){
  * Check if the given day is valid.
  */
 bool valid_day(int day, int month){
-    return (day == monthdays[month]); 
+    return (day == monthdays[month - 1]); 
 }
 
 /** 
