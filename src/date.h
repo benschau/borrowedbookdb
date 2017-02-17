@@ -5,7 +5,20 @@
 
 #include <stdbool.h>
 
-const int monthdays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static const int monthdays[] = {
+    31, // Jan
+    28, // Feb
+    31, // Mar
+    30, // Apr
+    31, // May
+    30, // Jun 
+    31, // Jul 
+    31, // Aug
+    30, // Sept
+    31, // Oct
+    30, // Nov
+    31  // Dec
+};
 
 typedef struct Dates {
     int day;

@@ -6,12 +6,13 @@
 
 #include "date.h"
 
+
 Date* initdate(int day, int month, int year){
     int errnum; 
     Date* date = malloc(sizeof(Date));
     
     if (date != NULL) { 
-        date->day = valid_title(day, month) ? day : 0;
+        date->day = valid_day(day, month) ? day : 0;
         date->month = valid_month(month) ? month : 0;
         date->year = valid_year(year) ? year : 0; 
     } else {
