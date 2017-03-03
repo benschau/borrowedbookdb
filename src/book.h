@@ -6,6 +6,7 @@
 
 #define MAX_AUTHOR_LEN 1024
 #define MAX_TITLE_LEN 1024
+#define MAX_ISBN_LEN 13
 #define NUM_BOOK_PARAMS 4
 #define RENEW_TIME 1
 
