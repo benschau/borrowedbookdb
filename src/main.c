@@ -10,19 +10,24 @@ int main(int argc, char** argv){
     PGconn *conn = PQconnectdb("user=barchie dbname=bookdb");
     valid_conn(conn);  
 
-    /* Book* book = malloc(sizeof(Book)); */
+    char title[MAX_TITLE_LEN];
+    char author[MAX_AUTHOR_LEN];
+    char isbn[MAX_ISBN_LEN];
+    char date[MAX_DATE_LEN];
 
-    /* book->title = "C Programming Language"; */
-    /* book->isbn = "0-13-110163-3"; */
-    /* book->author = "Kernighan and Ritchie"; */
-    
-    /* book->checkin = malloc(sizeof(Date)); */
-    /* book->checkin->day = 9; */
-    /* book->checkin->month = 1; */
-    /* book->checkin->year = 2017; */ 
-    char *title = "C Programming Language";
-    char *isbn = "0-13-110163-3";
-    char *author = "Kernighan and Ritche";
+    printf("----bookdb add----"); 
+    printf("TITLE: ");
+    fgets(title, MAX_TITLE_LEN, stdin);
+    printf("AUTHOR: ");
+    fgets(author, MAX_AUTHOR_LEN, stdin);
+    printf("ISBN: ");
+    fgets(isbn, MAX_ISBN_LEN, stdin);
+    printf("CHECK OUT DATE: ");
+    fgets(date, MAX_DATE_LEN, stdin);
+
+    // need to convert month, date, year for date struct.
+    // use atoi() and pointer arithmetic? 
+
     Date *checkin = initdate(9, 1, 2017);
     Book *book = initbook(title, isbn, author, checkin);
 
@@ -36,6 +41,7 @@ int main(int argc, char** argv){
     printf("Current number of books checked out: %d", numBooks);
     
     do_exit(conn);
+    exit(0);
 }
 
 
